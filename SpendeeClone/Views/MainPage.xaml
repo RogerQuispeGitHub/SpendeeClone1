@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SpendeeClone.ViewModels"
+             x:Class="SpendeeClone.Views.MainPage"
+             Title="Spendee Clone">
+
+    <Grid RowDefinitions="Auto,*">
+        <!-- Balance Card -->
+        <Frame Margin="20" Padding="20" CornerRadius="10">
+            <StackLayout>
+                <Label Text="Current Balance" 
+                       HorizontalOptions="Center" 
+                       FontSize="20"/>
+                <Label Text="{Binding Balance, StringFormat='{0:C}'}" 
+                       HorizontalOptions="Center" 
+                       FontSize="36"
+                       FontAttributes="Bold"/>
+            </StackLayout>
+        </Frame>
+
+        <!-- Transactions List -->
+        <CollectionView Grid.Row="1" 
+                        ItemsSource="{Binding Transactions}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="20,10" ColumnDefinitions="Auto,*,Auto">
+                        <Frame HeightRequest="40" 
+                               WidthRequest="40" 
+                               CornerRadius="20"
+                               BackgroundColor="{Binding Type, Converter={StaticResource TransactionTypeColorConverter}}">
+                            <Image Source="{Binding Category, Converter={StaticResource CategoryIconConverter}}"
+                                   HeightRequest="20"
+                                   WidthRequest="20"/>
+                        </Frame>
+                        
+                        <StackLayout Grid.Column="1" Margin="15,0">
+                            <Label Text="{Binding Description}"
+                                   FontAttributes="Bold"/>
+                            <Label Text="{Binding Date, StringFormat='{0:MMM dd, yyyy}'}"
+                                   TextColor="Gray"
+                                   FontSize="12"/>
+                        </StackLayout>
+                        
+                        <Label Grid.Column="2"
+                               Text="{Binding Amount, StringFormat='{0:C}'}"
+                               VerticalOptions="Center"
+                               TextColor="{Binding Type, Converter={StaticResource TransactionTypeColorConverter}}"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Add Transaction Button -->
+        <Button Grid.Row="1"
+                Text="+"
+                FontSize="30"
+                WidthRequest="60"
+                HeightRequest="60"
+                CornerRadius="30"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="20"
+                Command="{Binding ShowAddTransactionCommand}"/>
+    </Grid>
+</ContentPage>
